@@ -1,0 +1,16 @@
+# Copy to clis/<name>.sh. <name> is what `hq install <name>` takes.
+# hq sources this file in a subshell and calls one function at a time.
+
+CLI_BIN=tool                       # the binary looked up on PATH
+CLI_DESC="Tool: what it gives agents access to (tool)"
+
+cli_version() { tool --version; }  # print the version; first line is used
+
+# Exit 0 when logged in and usable. Print the account if the CLI can tell you.
+# If the CLI needs no login, use: cli_auth() { :; }
+cli_auth() { tool auth status; }
+
+# Prefer Homebrew. Fall back to the vendor's installer.
+cli_install() { brew install tool; }
+
+cli_login() { tool auth login; }

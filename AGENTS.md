@@ -10,5 +10,9 @@ My home repo. I start agent sessions here. It holds the skills I share across re
 
 Installed skills (`~/.agents/skills`, plugins, claude.ai) stay where their installers put them.
 
+## CLIs
+
+Run `hq` to see the CLIs you can use, such as `gh` for GitHub and `twg` for Jira and Confluence, and whether each is installed and logged in. Call those CLIs directly. `hq doctor` exits 1 if any is missing or logged out. If one is, tell me to run `hq install <name>` in my terminal, because installers and logins can open a browser. To register a new CLI, follow `clis/README.md`.
+
 ## Other Repos
 

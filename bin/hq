@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+# hq: the command-center CLI. Lists, checks and installs the CLIs registered in clis/.
+# Each clis/<name>.sh defines CLI_BIN, CLI_DESC and the functions cli_version,
+# cli_auth, cli_install and cli_login. See clis/README.md.
+set -uo pipefail
+
+# Resolve the repo root through the ~/.local/bin symlink.
+src="${BASH_SOURCE[0]}"
+while [ -L "$src" ]; do
+	dir="$(cd -P "$(dirname "$src")" && pwd)"
+	src="$(readlink "$src")"
+	case "$src" in /*) ;; *) src="$dir/$src" ;; esac
+done
+ROOT="$(cd -P "$(dirname "$src")/.." && pwd)"
+CLIS="$ROOT/clis"
+
+if [ -t 1 ]; then B=$'\e[1m' G=$'\e[32m' R=$'\e[31m' Y=$'\e[33m' D=$'\e[2m' N=$'\e[0m'; else B= G= R= Y= D= N=; fi
+
+names() { for f in "$CLIS"/*.sh; do [ -e "$f" ] && basename "$f" .sh; done; }
+
+# Run one hook of one CLI in a subshell, so CLI files can't leak into each other.
+hook() { ( . "$CLIS/$1.sh" && "$2" ); }
+field() { ( . "$CLIS/$1.sh" && eval "printf '%s' \"\${$2}\"" ); }
+installed() { command -v "$(field "$1" CLI_BIN)" >/dev/null 2>&1; }
+
+# status <name>: prints one row; returns 0 only if installed and logged in.
+status() {
+	local n="$1" bin ver acct
+	bin="$(field "$n" CLI_BIN)"
+	if ! installed "$n"; then
+		printf '  %-10s %s%-9s%s %s\n' "$n" "$R" "missing" "$N" "$D($bin not on PATH; run: hq install $n)$N"
+		return 1
+	fi
+	ver="$(hook "$n" cli_version 2>/dev/null | head -1)"
+	if acct="$(hook "$n" cli_auth 2>/dev/null)"; then
+		printf '  %-10s %s%-9s%s %s\n' "$n" "$G" "ok" "$N" "$bin ${ver:-?}${acct:+, logged in as $acct}"
+		return 0
+	fi
+	printf '  %-10s %s%-9s%s %s\n' "$n" "$Y" "logged out" "$N" "$bin ${ver:-?}; run: hq install $n"
+	return 1
+}
+
+usage() {
+	cat <<EOF
+Usage: hq [command] [cli...]
+
+The command-center CLI: lists, checks and installs the CLIs my agents use.
+
+Commands:
+  help             show this help (the default)
+  doctor [cli...]  check each CLI is installed and logged in; exits 1 if any isn't
+  install [cli...] install whatever is missing, then log in (all CLIs if none named)
+
+CLIs:
+EOF
+	local n
+	for n in $(names); do printf '  %-14s %s\n' "$n" "$(field "$n" CLI_DESC)"; done
+	echo
+	echo "Status:"
+	for n in $(names); do status "$n"; done
+	echo
+	echo "${D}Add a CLI: copy clis/_template.sh.txt to clis/<name>.sh and fill it in.$N"
+}
+
+check_names() { # call in the main shell, so exit ends hq
+	local n
+	for n in "$@"; do
+		[ -f "$CLIS/$n.sh" ] || { echo "hq: unknown CLI '$n'. Known: $(names | tr '\n' ' ')" >&2; exit 2; }
+	done
+}
+pick() { if [ $# -eq 0 ]; then names; else printf '%s\n' "$@"; fi; }
+
+doctor() {
+	local n rc=0
+	for n in $(pick "$@"); do status "$n" || rc=1; done
+	return $rc
+}
+
+install() {
+	local n rc=0
+	for n in $(pick "$@"); do
+		if ! installed "$n"; then
+			echo "${B}Installing $n$N"
+			hook "$n" cli_install || { echo "${R}Install of $n failed.$N"; rc=1; continue; }
+			hash -r
+		fi
+		if installed "$n" && ! hook "$n" cli_auth >/dev/null 2>&1; then
+			echo "${B}Logging in to $n$N"
+			hook "$n" cli_login || rc=1
+		fi
+		status "$n" || rc=1
+	done
+	return $rc
+}
+
+cmd="${1:-help}"; shift || true
+case "$cmd" in
+	help | -h | --help) usage ;;
+	doctor) check_names "$@"; doctor "$@" ;;
+	install) check_names "$@"; install "$@" ;;
+	*) echo "hq: unknown command '$cmd'" >&2; usage >&2; exit 2 ;;
+esac
