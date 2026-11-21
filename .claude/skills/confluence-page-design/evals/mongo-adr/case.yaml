@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: mongo-adr
+expected_outcome: |
+  A Confluence page following the confluence-page-design best practices for this page type, with a live whiteboard diagram embedded where it helps.
