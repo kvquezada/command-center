@@ -14,3 +14,6 @@ cli_auth() { tool auth status; }
 cli_install() { brew install tool; }
 
 cli_login() { tool auth login; }
+
+# Optional. Update to the latest release without prompting; hq update skips CLIs without it.
+cli_update() { brew upgrade tool; }

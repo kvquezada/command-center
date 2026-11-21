@@ -1,11 +1,11 @@
 # CLIs
 
-Each `<name>.sh` here registers one CLI with `hq`. `hq` lists it in `hq --help`, checks it in `hq doctor`, and installs it with `hq install <name>`.
+Each `<name>.sh` here registers one CLI with `hq`. `hq` lists it in `hq --help`, checks it in `hq doctor`, installs it with `hq install <name>`, and updates it with `hq update <name>`.
 
 ## Add a CLI
 
 1. Copy `_template.sh.txt` to `<name>.sh`.
-2. Set `CLI_BIN` and `CLI_DESC`, and fill in the four functions: `cli_version`, `cli_auth`, `cli_install` and `cli_login`.
+2. Set `CLI_BIN` and `CLI_DESC`, and fill in the four functions: `cli_version`, `cli_auth`, `cli_install` and `cli_login`. Add `cli_update` too, unless the CLI can't update itself.
 3. Run `hq doctor <name>`, then `hq install <name>` if it's missing.
 4. Commit the file.
 

@@ -11,4 +11,6 @@ cli_auth() {
 
 cli_install() { brew install gh; }
 
+cli_update() { brew upgrade gh; }
+
 cli_login() { gh auth login; }

@@ -50,6 +50,7 @@ Commands:
   help             show this help (the default)
   doctor [cli...]  check each CLI is installed and logged in; exits 1 if any isn't
   install [cli...] install whatever is missing, then log in (all CLIs if none named)
+  update [cli...]  update installed CLIs to their latest release (all if none named)
 
 CLIs:
 EOF
@@ -93,10 +94,31 @@ install() {
 	return $rc
 }
 
+update() {
+	local n rc=0
+	for n in $(pick "$@"); do
+		if ! installed "$n"; then
+			echo "${Y}Skipping $n: not installed. Run: hq install $n$N"
+			rc=1
+			continue
+		fi
+		if ! ( . "$CLIS/$n.sh" && type cli_update >/dev/null 2>&1 ); then
+			echo "${Y}Skipping $n: clis/$n.sh has no cli_update.$N"
+			continue
+		fi
+		echo "${B}Updating $n$N"
+		hook "$n" cli_update || { echo "${R}Update of $n failed.$N"; rc=1; }
+		hash -r
+		status "$n" || rc=1
+	done
+	return $rc
+}
+
 cmd="${1:-help}"; shift || true
 case "$cmd" in
 	help | -h | --help) usage ;;
 	doctor) check_names "$@"; doctor "$@" ;;
 	install) check_names "$@"; install "$@" ;;
+	update) check_names "$@"; update "$@" ;;
 	*) echo "hq: unknown command '$cmd'" >&2; usage >&2; exit 2 ;;
 esac

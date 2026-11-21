@@ -20,3 +20,6 @@ cli_install() {
 }
 
 cli_login() { twg login; }
+
+# Upgrades the binary, then refreshes the installed TWG agent skills without prompting.
+cli_update() { twg upgrade --yes; }
