@@ -23,6 +23,7 @@ You take one KAN ticket to a verified PR through one playbook: Bug fix or Featur
 2. **Create or resume `work/<KEY>-<slug>/ticket.md`.**
    - New: the body is a snapshot of the ticket, and the front matter holds `playbook`, `step` and the Jira `updated` time. Pick `<slug>` from the summary, three to five words.
    - Resume: say where things stand in one line ("ABC-54 · Feature, step 3 refine, pass 2") and continue at `step` without restating. If the ticket's `updated` time moved, show what changed and wait. ✋
+   - Template versions: for each document that isn't `done`, compare its `template:` with the latest row in `templates/CHANGELOG.md`. If a newer version exists, offer the migration that row describes. ✋ A migration keeps every ID, updates `template:` and adds a Change log row. A new document always uses the latest template.
 3. **Pick the playbook.** An argument (`bug` or `feature`) decides it. Otherwise:
    - **Bug fix** when current behavior differs from behavior that worked before or was specified.
    - **Feature** for anything else, including behavior that was never specified.

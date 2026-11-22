@@ -27,3 +27,19 @@ _Avoid_: review round, iteration
 **Run brief**:
 The `brief.md` built from one approved plan task. Each `sdlc` agent reads only its own slice of it, and one brief is one run and one PR.
 _Avoid_: spec (the whole design), plan (all the tasks), prompt
+
+**Working answer**:
+A guess you give at the plan checkpoint for a question that is cheap to get wrong, with the cost of rework if it's wrong. It lets a task build before the PM answers.
+_Avoid_: Ruling (the factory's old name), assumption, default
+
+**Template version**:
+`<name>@<n>`, the shape a filled document was made from, counted per template.
+_Avoid_: schema version, semver
+
+**Bump**:
+A new template version, made by any change to what a filled file holds.
+_Avoid_: upgrade, release
+
+**Migration**:
+Moving an in-flight document to a newer template version, keeping every ID. It happens only when you accept the offer.
+_Avoid_: upgrade, conversion
