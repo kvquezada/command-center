@@ -2,7 +2,7 @@
 
 Skeletons for the supported page types: meeting notes, decision/RFC, PRD, technical spec/plan and ADR. For any other kind of page, don't force one of these — apply the general rules in SKILL.md and order sections by what the reader needs first.
 
-Each skeleton starts with the purpose-first header (just the summary panel at full width; no key-facts line, no table of contents). Adapt freely — the order of sections is "what the reader needs first", so reorder if this reader needs something else first. If the org has a template for the type, use that instead.
+Each skeleton starts with the purpose-first header (just the summary panel at full width; no key-facts line, no table of contents). Adapt freely — the order of sections is "what the reader needs first", so reorder if this reader needs something else first. If the org has a template for the type, use that instead, except for technical specs, which always use the nine-section skeleton below.
 
 ## Meeting notes
 Reader: attendees and people who missed it, mostly skimming for outcomes.
@@ -43,15 +43,17 @@ Emoji: 🎯.
 
 ## Technical spec / technical plan
 Reader: engineers building and reviewing it; future maintainers.
-- Header: summary panel (what's being built, why, the approach in one sentence, links to the PRD/RFC as inline smart links).
-- H2 Context & goals — short; link out rather than repeat the PRD.
-- H2 Architecture — embedded whiteboard diagram of components and data flow (see diagrams.md), then 3–6 bullets explaining each box.
-- H2 Design — H3 per area (data model, API, UI, jobs). Schemas and API shapes in code blocks with the language set; endpoint lists as tables (method, path, purpose).
-- H2 Alternatives considered — table or expands; the real argument belongs in an ADR/RFC.
-- H2 Rollout & migration — numbered steps, feature flags, `warning` panel for irreversible steps.
-- H2 Testing & observability.
-- H2 Risks & open questions — table with owner + status lozenge.
-- H2 Milestones / tasks — task list or Jira smart links.
+Nine sections, in this order, no more and no fewer. Anything else goes in an appendix expand or a linked page. Aim for under 12 pages. A spec with fewer than two alternatives, or with no stated trade-offs, isn't ready for review. Use it for new services, significant refactors, API changes with downstream consumers and data migrations. A research spike gets a one-page spike report instead, and an emergency fix gets a post-mortem.
+- Header: summary panel (what's being built, why, the approach in one sentence, links to the Jira ticket and PRD as inline smart links). Its last line: author and date, at least two named reviewers, and **Approved by** left blank until sign-off.
+- H2 Problem statement — one paragraph: who is affected, what is broken, how we know (a metric or observation). No solution yet.
+- H2 Scope and non-goals — two columns (`layout-two-equal`): In scope / Non-goals. Reviewers read non-goals first.
+- H2 Current state — about three sentences on how it works today, plus one diagram if the system isn't obvious. Link existing docs; don't re-explain them.
+- H2 Proposed design — in whiteboard order: data flow first (embedded whiteboard, see diagrams.md), then the hard part, then edge cases. H3 per area (data model, API, UI, jobs). Schemas and API shapes in code blocks with the language set; endpoint lists as tables (method, path, purpose). Sequence diagrams where order matters.
+- H2 Alternatives considered — at least two, each with a paragraph on why it lost. A table or expands; the full argument belongs in an ADR.
+- H2 Trade-offs — the costs of the chosen design (performance, operational complexity, lock-in). Never "none".
+- H2 Rollout plan — numbered steps: feature flag name, migration steps, rollback path, observability added. For data changes, a backfill plan and how a partial failure mid-migration is detected. `warning` panel for irreversible steps.
+- H2 Success metrics — table: metric, baseline, target at 30 days, dashboard link. One line per metric.
+- H2 Open questions — numbered list that reviewers answer inline (owner + status lozenge per item). The spec is ready when every one is closed.
 Emoji: 🧩.
 
 ## ADR (architecture decision record)
