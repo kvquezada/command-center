@@ -32,3 +32,4 @@ These need a map decision and a new template name, not a bump:
 | adr | 1 | 2026-11-22 | 062542b | First version | — |
 | plan | 1 | 2026-11-22 | (this commit) | First version | — |
 | brief | 1 | 2026-11-22 | (this commit) | First version | — |
+| plan | 2 | 2026-11-22 | (this commit) | Added a `Build` column to the task table and a `**Build:**` line to each task: the build path and the sdlc gate it fails | Add the column and line to each task. Run the gates in `ticket/playbooks/build.md` to fill them. |

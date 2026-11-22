@@ -1,5 +1,5 @@
 ---
-template: plan@1
+template: plan@2
 ticket: <KEY>
 topic: <topic>
 status: draft            # draft | approved
@@ -30,10 +30,10 @@ IDs are permanent. Never renumber or reuse one. Cite a task as `<KEY>/T<n>`.
 
 A task gets a brief only when this plan's "Approved by" is filled in and every question in its Questions cell has a PM answer or a working answer. A working answer is one you give at this checkpoint, for a question that is cheap to get wrong. It goes under the task as `- **Q<n>** <question> Working answer: <value>. Rework if wrong: <cost>.`
 
-| ID | Task | Depends on | Shape | Questions | Brief |
-| --- | --- | --- | --- | --- | --- |
-| T1 | <outcome a user can see> | none | one | none | ready |
-| T2 | | T1 | arena | Q1 (working answer) | ready |
+| ID | Task | Depends on | Shape | Build | Questions | Brief |
+| --- | --- | --- | --- | --- | --- | --- |
+| T1 | <outcome a user can see> | none | one | sdlc | none | ready |
+| T2 | | T1 | arena | session (arena) | Q1 (working answer) | ready |
 
 ## T1: <outcome a user can see>
 
@@ -51,6 +51,7 @@ A task gets a brief only when this plan's "Approved by" is filled in and every q
 **ADRs:** <ADR file names, or none>
 **Rollout:** <the spec's rollout step numbers>
 **Shape:** <one | arena. <the shapes that all meet the criteria, and how to pick between them>>
+**Build:** <sdlc | session (<the sdlc gate it fails: unregistered target, no brief support, arena, open parent>) | session (pinned)>. Re-checked when the build starts. See `.claude/skills/ticket/playbooks/build.md`.
 **Files likely touched:** <paths>
 **Size:** <S | M | L>
 
