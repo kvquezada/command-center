@@ -1,12 +1,12 @@
 ---
 name: repo-inventory
-description: Find every git repo under the home directory, have the user mark each in or out, and write their gitignored repos.yaml and the "Other Repos" notes in CLAUDE.local.md.
+description: Find every git repo under the home directory, have the user mark each in or out, and write their gitignored repos.yaml and the "Other Repos" notes in other-repos.local.md.
 disable-model-invocation: true
 ---
 
 # Repo inventory
 
-Refreshes the home repo's `repos.yaml` and the `## Other Repos` section of its `CLAUDE.local.md` (the home repo is the git root you run from). Both files are gitignored and belong to the user running this, so never commit them from what is actually on disk. Only read until step 4 is done. Leave `.env` and other secret files unread.
+Refreshes the home repo's `repos.yaml` and the `## Other Repos` section of its `other-repos.local.md` (the home repo is the git root you run from). Both files are gitignored and belong to the user running this, so never commit them from what is actually on disk. Only read until step 4 is done. Leave `.env` and other secret files unread.
 
 ## 1. Find
 
@@ -44,7 +44,7 @@ Then write one line saying what it is, taken from the top of its `README.md`, `A
 - it has a `SPEC.md`, `GLOSSARY.md` or `docs/adr/` → name it as the first read
 - it has no remote → "Local only: no remote, so it isn't backed up anywhere."
 
-Keep any hand-written hint that the current `CLAUDE.local.md` already has for that repo.
+Keep any hand-written hint that the current `other-repos.local.md` already has for that repo.
 
 ## 5. Write
 
@@ -56,7 +56,7 @@ Rewrite `repos.yaml` at the home repo root with one entry per repo that is in, i
   base_branch: main
 ```
 
-Then replace only the `## Other Repos` section of `CLAUDE.local.md`. Create the file if it doesn't exist. Open the section with the paragraph that points to `repos.yaml`, then add one note per repo that is in, in the same order:
+Then replace only the `## Other Repos` section of `other-repos.local.md`. Create the file if it doesn't exist. Open the section with the paragraph that points to `repos.yaml`, then add one note per repo that is in, in the same order:
 
 ```
 - <name> (<what it is>):
@@ -72,4 +72,4 @@ Done when every repo marked in has exactly one note, plus one `repos.yaml` entry
 
 ## 6. Report
 
-Show what changed in `repos.yaml` and `CLAUDE.local.md` against their previous contents, and list the repos that came in or went out. Neither file is committed.
+Show what changed in `repos.yaml` and `other-repos.local.md` against their previous contents, and list the repos that came in or went out. Neither file is committed.
