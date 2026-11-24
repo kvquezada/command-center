@@ -3,7 +3,7 @@ template: diagnosis@1
 ticket: <KEY>
 topic: <topic>
 status: draft            # draft | approved
-repo: <name from repos.yaml>
+repo: <name from REPOS.md>
 ---
 
 # 🐞 <Symptom as a statement>

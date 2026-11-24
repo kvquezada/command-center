@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# setup: first-time setup for this checkout. Writes REPOS.md (gitignored), the
+# list of git repos under a root (default: $HOME) that agents read before
+# working in another repo. Edit REPOS.md afterwards: delete the repos you don't
+# work in and add a line on what each one is.
+# Skips worktrees, hidden folders (plugins, shell themes, tool caches), orca
+# workspaces and this checkout. Credentials in remote URLs are masked.
+# Usage: bin/setup [root] [--force]   (--force overwrites an existing REPOS.md)
+set -u
+cd "$(git rev-parse --show-toplevel)" || exit 2
+home_repo="$PWD"
+
+root="$HOME"; force=0
+for a in "$@"; do
+	case "$a" in
+		--force) force=1 ;;
+		*) root="$a" ;;
+	esac
+done
+
+if [ -e REPOS.md ] && [ $force -eq 0 ]; then
+	echo "setup: REPOS.md already exists. Edit it, or rerun with --force to rewrite it." >&2
+	exit 1
+fi
+
+rows=$(find "$root" \
+	\( -path "$root/.*" -o -path "$root/Library" -o -path "$root/orca" \
+	   -o -name node_modules -o -name .venv -o -name venv -o -name vendor -o -name Pods \
+	   -o -name .build -o -name DerivedData -o -name SourcePackages -o -name Carthage -o -name .claude \) -prune \
+	-o -name .git -type d -print 2>/dev/null |
+while IFS= read -r g; do
+	r="${g%/.git}"
+	[ "$r" = "$home_repo" ] && continue
+	date=$(git -C "$r" log -1 --format=%cs 2>/dev/null) || date="no commits"
+	printf '%s\t%s\n' "$date" "$r"
+done | sort -r)
+
+{
+	echo "# Repos"
+	echo
+	echo "The repos you work in, written by \`bin/setup\`. Edit freely: delete repos you don't work in, and add what each one is."
+	echo "Branch from and open PRs against each repo's base branch."
+	printf '%s\n' "$rows" | while IFS=$'\t' read -r date r; do
+		[ -n "$r" ] || continue
+		remote=$(git -C "$r" remote get-url origin 2>/dev/null | sed -E 's#//[^/@]+@#//***@#')
+		base=$(git -C "$r" symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##')
+		if [ -z "$base" ]; then
+			base=$(git -C "$r" symbolic-ref --short HEAD 2>/dev/null)
+			for b in main master; do
+				git -C "$r" show-ref -q --verify "refs/heads/$b" && { base=$b; break; }
+			done
+		fi
+		reads=()
+		for f in AGENTS.md SPEC.md GLOSSARY.md docs/adr; do [ -e "$r/$f" ] && reads+=("$f"); done
+		echo
+		echo "## $(basename "$r")"
+		echo
+		echo "- Path: ${r/#$HOME/~}"
+		echo "- Remote: ${remote:-none (local only, not backed up)}"
+		echo "- Base branch: ${base:-unknown}"
+		echo "- Last commit: $date"
+		[ ${#reads[@]} -gt 0 ] && echo "- Read first: ${reads[*]}"
+	done
+} > REPOS.md
+
+echo "setup: wrote REPOS.md with $(grep -c '^## ' REPOS.md) repos. Delete the ones you don't work in."
+grep -q '\*\*\*@' REPOS.md && echo "setup: warning: a remote URL in REPOS.md holds a credential (masked as ***@). Revoke it." >&2
+exit 0
