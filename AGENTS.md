@@ -11,9 +11,9 @@ Before you work in another repo, read `REPOS.md` for its path, base branch and w
 These per-developer files are gitignored:
 
 - `REPOS.md`: the repos you work in.
-- `config.yaml`: the Jira project key and Confluence target for `/ticket`.
+- `config.yaml`: optional settings for `/refine`, such as the team's reference tickets for estimation.
 
-If a task needs one that is missing, stop and point the user to the Setup section of `README.md`.
+If a task needs `REPOS.md` and it is missing, stop and point the user to the Setup section of `README.md`.
 
 ## CLIs
 

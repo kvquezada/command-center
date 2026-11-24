@@ -13,6 +13,6 @@ The human supervises asynchronously. Agents must stay unblocked. Make reasonable
 - Irreversible actions (force-push, delete production data, send external messages) still require confirmation.
 - Reversible actions (write code, edit notes, split tasks) should proceed without blocking.
 - Product direction comes from the human. Execution should not block.
-- Checkpoints are the exception. At a playbook step marked ✋, stop and wait for the human's answer. Between checkpoints, proceed.
+- Checkpoints are the exception. At a step marked ✋, stop and wait for the human's answer. Between checkpoints, proceed.
 
 <!-- Copied from pstack (`cursor/plugins@792440e`, `pstack/skills/principle-never-block-on-the-human/SKILL.md`), MIT License, Copyright (c) 2026 Lauren Tan. -->

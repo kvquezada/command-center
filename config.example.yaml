@@ -1,7 +1,17 @@
-# Per-developer settings for the /ticket workflow.
-# Copy to config.yaml (gitignored) and fill in your own values.
-jira:
-  project: ABC            # Jira project key your tickets use
-confluence:
-  space_id: '<your space id, e.g. ~ followed by 24 hex chars>'   # space the ticket documents publish to
-  specs_parent_id: '000000'               # page that holds the `specs` page
+# Per-developer settings for /refine. Copy to config.yaml (gitignored) and
+# fill in your own values. Every key is optional.
+estimation:
+  # Your team's past tickets as the example for each point value. A value left
+  # out uses the generic example in .claude/skills/refine/references/estimation.md.
+  reference:
+    # 1: ABC-12
+    # 2: ABC-40
+    # 3: ABC-7
+    # 5: ABC-31
+    # 8: ABC-19
+
+# TODO(team): decide where source systems' API contracts live, then map each
+# system to its contract page here. Until then, /refine searches Confluence for
+# each system by name.
+# contracts:
+#   <system>: '<Confluence page id or URL>'

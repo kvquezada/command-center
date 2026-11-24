@@ -1,6 +1,6 @@
 # command-center
 
-A home repo to start agent sessions from. It holds the skills shared across your other repos, the `/ticket` workflow, and pointers to the repos you work in. Agents read `AGENTS.md`; this file is for people.
+A home repo to start agent sessions from. It holds the skills shared across your other repos, the `/refine` skill, and pointers to the repos you work in. Agents read `AGENTS.md`; this file is for people.
 
 ## Setup
 
@@ -14,13 +14,13 @@ Do this once per checkout.
 
    This finds the git repos under your home directory and writes them to `REPOS.md`, which git ignores. Open `REPOS.md`, delete the repos you don't work in, and add a line on what each one is. Agents read it before they work in another repo. To rescan, run `bin/setup --force`, which overwrites your edits.
 
-2. Configure `/ticket`:
+2. Optional: configure `/refine`:
 
    ```sh
    cp config.example.yaml config.yaml
    ```
 
-   Fill in your Jira project key and the Confluence space and parent page that ticket documents publish to. Git ignores `config.yaml`.
+   Add your team's past tickets as estimation references. Without the file, `/refine` uses the generic examples. Git ignores `config.yaml`.
 
 3. Check your CLIs:
 
@@ -42,7 +42,7 @@ The skills live in `.claude/skills/`.
 
 | Area | Skills |
 |---|---|
-| Ticket workflow | `ticket`: takes a Jira ticket to a verified PR through the Bug fix or Feature playbook |
+| Refinement | `refine`: takes one vague Jira ticket to Ready, following the team's Backlog Refinement Playbook. Its templates are in `templates/`. |
 | Code questions | `how`, `why`, `sketch`, `in-your-own-words` |
 | Writing | `unslop`, `technical-writing`, `confluence-page-design` |
 | Review | `security-review` |
