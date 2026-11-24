@@ -1,5 +1,5 @@
 # Per-developer settings for the /ticket workflow.
-# Copy to command-center.local.yaml (gitignored) and fill in your own values.
+# Copy to config.yaml (gitignored) and fill in your own values.
 jira:
   project: ABC            # Jira project key your tickets use
 confluence:

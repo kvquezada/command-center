@@ -4,7 +4,6 @@
 work/
 .claude/worktrees/
 # Per-developer config. Copy the .example files to start.
-command-center.local.yaml
+/config.yaml
 CLAUDE.local.md
-scrub.local.txt
 REPOS.md

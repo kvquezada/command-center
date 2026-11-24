@@ -1,6 +1,6 @@
 # Publish to Confluence
 
-Read `confluence.space_id` and `confluence.specs_parent_id` from `command-center.local.yaml`. If the file or either key is missing, stop and ask the user to copy `command-center.example.yaml` and fill it in. ✋
+Read `confluence.space_id` and `confluence.specs_parent_id` from `config.yaml`. If the file or either key is missing, stop and ask the user to copy `config.example.yaml` and fill it in. ✋
 
 Pages live in that space under the parent page `specs`, which sits under `specs_parent_id`. Its children are `prd`, `user-journeys`, `tech-specs`, `plans` and `adrs`. Look up their page ids with `twg confluence tree <specs_parent_id> --depth 2` the first time. The local Markdown is the source, and the page matches the file name without `.md`. Follow **confluence-page-design** for the page itself.
 

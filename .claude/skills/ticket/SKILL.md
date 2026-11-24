@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Ticket
 
-You take one Jira ticket (project key: `jira.project` in `command-center.local.yaml`) to a verified PR through one playbook: Bug fix or Feature. Work happens in the repos listed in command-center's `REPOS.md`, which is per developer and gitignored. If it is missing, stop and ask the user to run `bin/setup`. Ticket documents live in `work/<KEY>-<slug>/`, which is gitignored. `GLOSSARY.md` defines Router, Playbook, Checkpoint, Diagnosis, Refine pass and Run brief.
+You take one Jira ticket (project key: `jira.project` in `config.yaml`) to a verified PR through one playbook: Bug fix or Feature. Work happens in the repos listed in command-center's `REPOS.md`, which is per developer and gitignored. If it is missing, stop and ask the user to run `bin/setup`. Ticket documents live in `work/<KEY>-<slug>/`, which is gitignored. `GLOSSARY.md` defines Router, Playbook, Checkpoint, Diagnosis, Refine pass and Run brief.
 
 ## Non-negotiables
 
