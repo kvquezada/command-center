@@ -13,7 +13,7 @@ The team's checklist a ticket passes before it gets an estimate or enters a spri
 _Avoid_: DoR gate, entry criteria
 
 **Ready**:
-A ticket that passes every Definition of Ready item, carries the team's estimate, and has a description the PM approved.
+A ticket that passes every Definition of Ready item, carries the team's estimate, and has a Ready story the PM approved posted on it.
 _Avoid_: refined, groomed, agent-ready
 
 **Not Ready**:
@@ -25,7 +25,7 @@ The comment the dev posts on a ticket with their understanding, proposed accepta
 _Avoid_: analysis, proposal, write-up
 
 **Ready story**:
-The shape of a Ready ticket's description: the story line, Gherkin acceptance criteria, technical notes, dependencies, test approach, out of scope and estimate.
+The comment that describes a Ready ticket: the story line, Gherkin acceptance criteria, technical notes, dependencies, test approach, out of scope and estimate.
 _Avoid_: spec, brief, plan
 
 **Spike**:
