@@ -14,7 +14,7 @@ _Avoid_: route, workflow, flow
 
 **Checkpoint**:
 A Playbook step that waits for you before the agent goes on.
-_Avoid_: gate (the factory uses that for code-checked acceptance), approval step
+_Avoid_: gate, approval step
 
 **Diagnosis**:
 The local document for a bug: ranked probable causes, repro steps, a repro test where one is cheap, and the fix plan. You approve it.
@@ -25,12 +25,12 @@ One round of reading PM comments on the published PRD, editing the Markdown and 
 _Avoid_: review round, iteration
 
 **Run brief**:
-The `brief.md` built from one approved plan task. Each `sdlc` agent reads only its own slice of it, and one brief is one run and one PR.
+The `brief.md` built from one approved plan task. Each build agent reads only its own slice of it, and one brief is one build and one PR.
 _Avoid_: spec (the whole design), plan (all the tasks), prompt
 
 **Working answer**:
 A guess you give at the plan checkpoint for a question that is cheap to get wrong, with the cost of rework if it's wrong. It lets a task build before the PM answers.
-_Avoid_: Ruling (the factory's old name), assumption, default
+_Avoid_: ruling, assumption, default
 
 **Template version**:
 `<name>@<n>`, the shape a filled document was made from, counted per template.

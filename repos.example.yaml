@@ -1,0 +1,5 @@
+# Repos you work in. CLAUDE.local.md "Other Repos" says what each one is and what to read first.
+# Copy to repos.yaml (gitignored), or run /repo-inventory to write it.
+- name: example-app
+  path: ~/code/example-app
+  base_branch: main

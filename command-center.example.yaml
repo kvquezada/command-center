@@ -1,0 +1,7 @@
+# Per-developer settings for the /ticket workflow.
+# Copy to command-center.local.yaml (gitignored) and fill in your own values.
+jira:
+  project: ABC            # Jira project key your tickets use
+confluence:
+  space_id: '<your space id, e.g. ~ followed by 24 hex chars>'   # space the ticket documents publish to
+  specs_parent_id: '000000'               # page that holds the `specs` page

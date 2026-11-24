@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# scrub-check: fail if a tracked file holds one developer's paths, accounts or IDs.
+# Checks generic patterns, the current git identity, and the strings in the
+# gitignored scrub.local.txt (one per line, # for comments).
+# Usage: bin/scrub-check [--staged]   (--staged checks the index, for a pre-commit hook)
+set -uo pipefail
+cd "$(git rev-parse --show-toplevel)" || exit 2
+
+mode=(); [ "${1:-}" = --staged ] && mode=(--cached)
+# Files that legitimately name a person or hold the patterns themselves.
+skip=(':!LICENSE' ':!.claude/skills/*/LICENSE' ':!bin/scrub-check')
+
+patterns=(
+	'/Users/[A-Za-z0-9._-]+'          # macOS home paths
+	'/home/[A-Za-z0-9._-]+/'          # Linux home paths
+	'~/Workspace/'                    # one developer's checkout layout
+	'git@github\.com:[A-Za-z0-9_-]+/' # clone URLs that name an owner
+	'~[0-9a-f]{24}'                   # Confluence personal-space IDs
+	'[A-Za-z0-9._%+-]+@(gmail|yahoo|outlook|hotmail|icloud)\.com'
+)
+literals=()
+for v in "$(git config user.name)" "$(git config user.email)"; do
+	[ -n "$v" ] && literals+=("$v")
+done
+if [ -f scrub.local.txt ]; then
+	while IFS= read -r line; do
+		line="${line%%#*}"; line="$(printf '%s' "$line" | sed 's/[[:space:]]*$//')"
+		[ -n "$line" ] && literals+=("$line")
+	done < scrub.local.txt
+fi
+
+rc=0
+report() { # report <label> <git grep args...>
+	local label="$1"; shift
+	local out st
+	out="$(git grep -n -I ${mode[@]+"${mode[@]}"} "$@" -- . "${skip[@]}")"; st=$?
+	[ $st -gt 1 ] && { echo "scrub-check: git grep failed ($label)" >&2; rc=2; return; }
+	[ -z "$out" ] && return
+	rc=1
+	printf '%s\n' "$label:"; printf '%s\n' "$out" | cut -c1-200 | sed 's/^/  /'
+}
+for p in "${patterns[@]}"; do report "pattern $p" -E -e "$p"; done
+for l in ${literals[@]+"${literals[@]}"}; do report "local string (${#l} chars)" -i -F -e "$l"; done
+
+[ $rc -eq 0 ] && echo "scrub-check: clean" || echo "scrub-check: move these into a gitignored local file (see AGENTS.md, Per-developer config)." >&2
+exit $rc

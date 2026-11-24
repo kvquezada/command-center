@@ -34,7 +34,7 @@ repo: <name from repos.yaml>
 
 ## Repro test
 
-<A failing test for the top cause, in the `sdlc --bug` Repro test block shape, written only when a cheap local test target exists. Otherwise: "None, manual repro only: <reason>".>
+<A failing test for the top cause, in the brief's Repro test block shape, written only when a cheap local test target exists. Otherwise: "None, manual repro only: <reason>".>
 
 ## Fix plan
 

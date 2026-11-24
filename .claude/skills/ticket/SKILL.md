@@ -6,13 +6,13 @@ disable-model-invocation: true
 
 # Ticket
 
-You take one KAN ticket to a verified PR through one playbook: Bug fix or Feature. Work happens in the repos listed in command-center's `repos.yaml`. Ticket documents live in `work/<KEY>-<slug>/`, which is gitignored. `GLOSSARY.md` defines Router, Playbook, Checkpoint, Diagnosis, Refine pass and Run brief.
+You take one Jira ticket (project key: `jira.project` in `command-center.local.yaml`) to a verified PR through one playbook: Bug fix or Feature. Work happens in the repos listed in command-center's `repos.yaml`, which is per developer and gitignored. If it is missing, stop and ask the user to run `/repo-inventory`. Ticket documents live in `work/<KEY>-<slug>/`, which is gitignored. `GLOSSARY.md` defines Router, Playbook, Checkpoint, Diagnosis, Refine pass and Run brief.
 
 ## Non-negotiables
 
 - **Checkpoints.** A step marked ✋ ends your turn and waits for the user's answer. Between checkpoints, proceed (the **principle-never-block-on-the-human** skill).
 - **Principles.** Each `principle-*` skill's description is its trigger. When a trigger hits, load that skill with the Skill tool and apply it. Every reply that ends a step finishes with one line per principle that changed a decision: `Principles: <Name> → <decision it changed>`. Cite only principles loaded this session, and leave the line out when none changed anything.
-- **Subagents.** The first line of every subagent brief is `Read <root>/.claude/skills/ticket/worker.md before anything else.` Then give the goal and the task.
+- **Subagents.** The first line of every subagent brief is `Read <root>/.claude/skills/ticket/worker.md before anything else.`, where `<root>` is the absolute path of this command-center checkout (`git rev-parse --show-toplevel`) Then give the goal and the task.
 - **Context.** Jira and Confluence come from `twg`. Code comes from the repos in `repos.yaml`, read through `how`, `why` or an Explore subagent.
 - **Prose.** Every reply and document goes through **unslop**. Specs, ADRs, PR bodies and commit messages also follow **technical-writing**.
 - **Irreversible actions** (force-push, deleting data, any message to a person) wait for the user. Plan and Diagnosis approval authorize the commits, pushes and PRs they list, and nothing outside them.
@@ -38,4 +38,4 @@ A Bug fix whose diagnosis finds the expected behavior was never specified propos
 - Building a task: `playbooks/build.md`.
 - Opening the PR: `playbooks/open-pr.md`.
 
-<!-- Adapted from pstack's poteto-mode (`cursor/plugins@792440e`), MIT License, Copyright (c) 2026 Lauren Tan. Design: maps/ticket-playbooks/tickets/06-router-and-playbook-steps.md. -->
+<!-- Adapted from pstack's poteto-mode (`cursor/plugins@792440e`), MIT License, Copyright (c) 2026 Lauren Tan. -->

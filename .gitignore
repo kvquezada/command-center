@@ -3,3 +3,9 @@
 .env.*
 work/
 .claude/worktrees/
+# Per-developer config. Copy the .example files to start.
+repos.yaml
+command-center.local.yaml
+CLAUDE.local.md
+scrub.local.txt
+repos.local/

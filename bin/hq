@@ -44,7 +44,7 @@ usage() {
 	cat <<EOF
 Usage: hq [command] [cli...]
 
-The command-center CLI: lists, checks and installs the CLIs my agents use.
+The command-center CLI: lists, checks and installs the CLIs your agents use.
 
 Commands:
   help             show this help (the default)

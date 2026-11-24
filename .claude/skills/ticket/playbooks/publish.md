@@ -1,6 +1,8 @@
 # Publish to Confluence
 
-Pages live in the user's personal space (`<space_id>`) under the parent page `specs`, which sits under "Overview" (<specs_parent_id>). Its children are `prd`, `user-journeys`, `tech-specs`, `plans` and `adrs`. The local Markdown is the source, and the page matches the file name without `.md`. Follow **confluence-page-design** for the page itself.
+Read `confluence.space_id` and `confluence.specs_parent_id` from `command-center.local.yaml`. If the file or either key is missing, stop and ask the user to copy `command-center.example.yaml` and fill it in. ✋
+
+Pages live in that space under the parent page `specs`, which sits under `specs_parent_id`. Its children are `prd`, `user-journeys`, `tech-specs`, `plans` and `adrs`. Look up their page ids with `twg confluence tree <specs_parent_id> --depth 2` the first time. The local Markdown is the source, and the page matches the file name without `.md`. Follow **confluence-page-design** for the page itself.
 
 - **First publish.** `twg confluence content create --space-id '<space_id>' --parent-id <child page id> --content-type page --title "<file name without .md>" --body-file <file> --format md --ack-body-formats -y`. Write the returned page id into the file's `confluence_id`. Version 1 is the agent's own.
 - **Republish.**

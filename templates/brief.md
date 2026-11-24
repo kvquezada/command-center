@@ -3,11 +3,11 @@ Status: approved · <YYYY-MM-DD> · <who>
 # <KEY>/T<n>: <task title from the plan>
 
 <!-- template: brief@1
-One brief is one sdlc run and one stacked PR. Build it only from an approved plan (Feature) or diagnosis (Bug fix),
+One brief is one build and one stacked PR. Build it only from an approved plan (Feature) or diagnosis (Bug fix),
 copying, never rewriting. Keep it in work/<KEY>-<slug>/briefs/, outside every agent's grants.
-Line 1 copies the plan's (or diagnosis's) "Approved by". sdlc reads it, and takes the Jira key from the title.
+Line 1 copies the plan's (or diagnosis's) "Approved by". The Jira key comes from the title.
 The H2 sections below are fixed: all of them, in this order, each once. An empty one says "None.".
-sdlc cuts each agent's slice by these headings:
+Each build agent or subagent reads only its slice, cut by these headings:
   builder:    Task, Design, Scope, ADRs, Rollout, Repro test
   verifier:   Task, Journeys, Repro test
   reviewer:   Task, Design, Scope, ADRs, Journeys, Rollout
