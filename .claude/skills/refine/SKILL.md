@@ -24,7 +24,7 @@ This skill follows the team's Backlog Refinement Playbook. These files are the a
 
 Each ticket has one folder: `work/<sprint>/<KEY>-<slug>/` when the ticket has a sprint, and `work/<KEY>-<slug>/` when it has none. `work/` is gitignored.
 
-- `<sprint>` is the sprint's name in lowercase with spaces as hyphens (`ABC Sprint 4` becomes `abc-sprint-4`). With several sprints, use the open one, or the latest if none is open.
+- `<sprint>` is the sprint's name in uppercase with spaces as hyphens (`ABC Sprint 4` becomes `ABC-SPRINT-4`). With several sprints, use the open one, or the latest if none is open.
 - `<slug>` is three to five words from the summary.
 - `ticket.md` holds a snapshot of the ticket. Its front matter holds `key`, `type`, `sprint`, `step`, `jira_updated` (the ticket's `updated` time at the last run), `note_comment_id`, `ready_comment_id` and `points`.
 - `note.md` is the refinement note, from `templates/refinement-note.md`.
