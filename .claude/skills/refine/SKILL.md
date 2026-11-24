@@ -24,7 +24,7 @@ This skill follows the team's Backlog Refinement Playbook. These files are the a
 
 Each ticket has one folder: `work/<sprint>/<KEY>-<slug>/` when the ticket has a sprint, and `work/<KEY>-<slug>/` when it has none. `work/` is gitignored.
 
-- `<sprint>` is the sprint's name in lowercase with spaces as hyphens (`KAN Sprint 4` becomes `kan-sprint-4`). With several sprints, use the open one, or the latest if none is open.
+- `<sprint>` is the sprint's name in lowercase with spaces as hyphens (`ABC Sprint 4` becomes `abc-sprint-4`). With several sprints, use the open one, or the latest if none is open.
 - `<slug>` is three to five words from the summary.
 - `ticket.md` holds a snapshot of the ticket. Its front matter holds `key`, `type`, `sprint`, `step`, `jira_updated` (the ticket's `updated` time at the last run), `note_comment_id`, `ready_comment_id` and `points`.
 - `note.md` is the refinement note, from `templates/refinement-note.md`.
@@ -39,7 +39,7 @@ Each ticket has one folder: `work/<sprint>/<KEY>-<slug>/` when the ticket has a 
 1. Read the ticket with `twg jira workitem get <KEY> --full`, which includes comments and links. An Epic stops here. List its children and ask for one.
 2. Look for `work/**/<KEY>-*/ticket.md`.
    - **None:** create the folder and `ticket.md`, set `step: triage`, and start at step 1.
-   - **Found:** say where things stand in one line ("KAN-33 · step 4 clarify · 2 of 3 questions answered").
+   - **Found:** say where things stand in one line ("ABC-123 · step 4 clarify · 2 of 3 questions answered").
      - If the ticket's sprint changed, move the folder to match and say so.
      - If Jira's `updated` time moved past `jira_updated`, show what changed (description edits and comments since the last run) and ask whether to fold it in. ✋
      - Continue at `step`.
@@ -110,4 +110,4 @@ Follow `references/estimation.md` and show the proposal in its output block. ✋
 
 Show `ready.md`. ✋ The user confirms the PM approved it, which also approves posting it. Post it with `twg jira workitem comment create --issue-id <KEY> --body-format markdown --body "$(cat ready.md)"`, store the comment id as `ready_comment_id`, set `step: ready`, and end with "<KEY> is Ready, <points> pts. The Ready story is posted as a comment. Next: build it." When `## ADRs` holds an ADR, add that whoever builds the ticket copies it into the code repo's `docs/adr`, and creates that folder if the repo has none.
 
-<!-- Source: the Backlog Refinement Playbook, https://claude.ai/artifact/BfZYYz5Jm1U2e4L9pAESMd -->
+<!-- Source: the team's Backlog Refinement Playbook. -->
