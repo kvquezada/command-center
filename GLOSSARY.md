@@ -1,45 +1,45 @@
 # command-center
 
-The words the `/ticket` workflow uses for the path from a Jira ticket to a PR.
+The words the `/refine` skill uses for taking a vague Jira ticket to one the team can build.
 
 ## Language
 
-**Router**:
-The `/ticket` skill. It reads one ticket, picks its Playbook and restates the ticket.
-_Avoid_: dispatcher, front door, triage
+**Refinement**:
+Turning a ticket a PM wrote into a Ready ticket. The PM owns the what and the why; the dev owns the how.
+_Avoid_: grooming, backlog grooming
 
-**Playbook**:
-The ordered steps for one kind of ticket: Bug fix or Feature.
-_Avoid_: route, workflow, flow
+**Definition of Ready**:
+The team's checklist a ticket passes before it gets an estimate or enters a sprint.
+_Avoid_: DoR gate, entry criteria
+
+**Ready**:
+A ticket that passes every Definition of Ready item, carries the team's estimate, and has a description the PM approved.
+_Avoid_: refined, groomed, agent-ready
+
+**Not Ready**:
+A ticket with an open question or an open spike. It gets no estimate and stays out of the sprint.
+_Avoid_: blocked, on hold
+
+**Refinement note**:
+The comment the dev posts on a ticket with their understanding, proposed acceptance criteria, technical approach, questions and what is out of scope.
+_Avoid_: analysis, proposal, write-up
+
+**Ready story**:
+The shape of a Ready ticket's description: the story line, Gherkin acceptance criteria, technical notes, dependencies, test approach, out of scope and estimate.
+_Avoid_: spec, brief, plan
+
+**Spike**:
+A timeboxed piece of research that answers one question blocking refinement. It produces a decision, a throwaway prototype or a recommendation, never shippable code.
+_Avoid_: investigation, research ticket
+
+**Source system**:
+A system the change reads from or writes to whose code is not in `REPOS.md`, such as an upstream API, a webhook, a feed or a vendor.
+_Avoid_: external system, third party, upstream
+
+**Reference ticket**:
+A past ticket the team uses as the example for one point value when estimating.
+_Avoid_: anchor, benchmark
 
 **Checkpoint**:
-A Playbook step that waits for you before the agent goes on.
+A step that waits for you before the agent goes on.
 _Avoid_: gate, approval step
-
-**Diagnosis**:
-The local document for a bug: ranked probable causes, repro steps, a repro test where one is cheap, and the fix plan. You approve it.
-_Avoid_: bug report, root-cause note, investigation
-
-**Refine pass**:
-One round of reading PM comments on the published PRD, editing the Markdown and republishing it.
-_Avoid_: review round, iteration
-
-**Run brief**:
-The `brief.md` built from one approved plan task. Each build agent reads only its own slice of it, and one brief is one build and one PR.
-_Avoid_: spec (the whole design), plan (all the tasks), prompt
-
-**Working answer**:
-A guess you give at the plan checkpoint for a question that is cheap to get wrong, with the cost of rework if it's wrong. It lets a task build before the PM answers.
-_Avoid_: ruling, assumption, default
-
-**Template version**:
-`<name>@<n>`, the shape a filled document was made from, counted per template.
-_Avoid_: schema version, semver
-
-**Bump**:
-A new template version, made by any change to what a filled file holds.
-_Avoid_: upgrade, release
-
-**Migration**:
-Moving an in-flight document to a newer template version, keeping every ID. It happens only when you accept the offer.
-_Avoid_: upgrade, conversion

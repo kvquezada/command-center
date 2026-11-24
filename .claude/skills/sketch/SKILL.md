@@ -1,6 +1,6 @@
 ---
 name: sketch
-description: "Sketch types, signatures, and module structure before code. Use in the Feature playbook's spec step, or for non-trivial work where jumping to code would lock in the wrong shape."
+description: "Sketch types, signatures, and module structure before code. Use for non-trivial work where jumping to code would lock in the wrong shape."
 ---
 
 # Sketch
