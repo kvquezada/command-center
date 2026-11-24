@@ -17,7 +17,7 @@ This skill follows the team's Backlog Refinement Playbook. These files are the a
 - **Not Ready.** A ticket with an open question or an open spike is Not Ready, and it gets no estimate.
 - **Principles.** Each `principle-*` skill's description is its trigger. When a trigger hits, load that skill with the Skill tool and apply it. Each step below names the principles most likely to fire. Every reply that ends a step finishes with one line per principle that changed a decision: `Principles: <Name> → <decision it changed>`. Cite only principles loaded this session, and leave the line out when none changed anything.
 - **Subagents.** The first line of every subagent brief is: `When a principle-* skill's trigger hits, load it with the Skill tool, and end your report with "Principles: <Name> → <decision it changed>" for each one that changed a decision.` Then give the goal and the task.
-- **Context.** Jira and Confluence come from `twg`. Code comes from the repos in command-center's `REPOS.md`, read through Explore subagents, **how** or **why**. If `REPOS.md` is missing, stop and ask the user to run `bin/setup`.
+- **Context.** Jira and Confluence come from `twg`. Code comes from the repos in command-center's `REPOS.md`, read through Explore subagents, **how** or **why**. If `REPOS.md` is missing, stop and ask the user to run `bin/hq setup`.
 - **Prose.** Every reply, note and Ready story goes through **unslop**.
 
 ## Files

@@ -6,13 +6,16 @@ A home repo to start agent sessions from. It holds the skills shared across your
 
 Do this once per checkout.
 
-1. List your repos:
+1. Set up the checkout:
 
    ```sh
-   bin/setup
+   bin/hq setup
    ```
 
-   This finds the git repos under your home directory and writes them to `REPOS.md`, which git ignores. Open `REPOS.md`, delete the repos you don't work in, and add a line on what each one is. Agents read it before they work in another repo. To rescan, run `bin/setup --force`, which overwrites your edits.
+   This does two things:
+
+   - It finds the git repos under your home directory and writes them to `REPOS.md`, which git ignores. Open `REPOS.md`, delete the repos you don't work in, and add a line on what each one is. Agents read it before they work in another repo. A rerun keeps your edits; `bin/hq setup --force` rewrites the file.
+   - It installs every CLI in `clis/` that is missing and logs in to any that is logged out. Installers and logins can open a browser. Later, `bin/hq doctor` checks them again.
 
 2. Optional: configure `/refine`:
 
@@ -22,15 +25,7 @@ Do this once per checkout.
 
    Add your team's past tickets as estimation references. Without the file, `/refine` uses the generic examples. Git ignores `config.yaml`.
 
-3. Check your CLIs:
-
-   ```sh
-   bin/hq doctor
-   ```
-
-   For each CLI it reports missing or logged out, run `bin/hq install <name>`. Installers and logins can open a browser.
-
-4. Optional: load `confluence-page-design` in every session, not only in this repo:
+3. Optional: load `confluence-page-design` in every session, not only in this repo:
 
    ```sh
    ln -s "$PWD/.claude/skills/confluence-page-design" ~/.claude/skills/

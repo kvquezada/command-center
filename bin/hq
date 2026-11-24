@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# hq: the command-center CLI. Lists, checks and installs the CLIs registered in clis/.
+# hq: the command-center CLI. Sets up a checkout (REPOS.md, then every CLI) and lists,
+# checks and installs the CLIs registered in clis/.
 # Each clis/<name>.sh defines CLI_BIN, CLI_DESC and the functions cli_version,
 # cli_auth, cli_install and cli_login. See clis/README.md.
 set -uo pipefail
@@ -48,6 +49,10 @@ The command-center CLI: lists, checks and installs the CLIs your agents use.
 
 Commands:
   help             show this help (the default)
+  setup [root] [--force]
+                   first-time setup: write REPOS.md from the git repos under root
+                   (default \$HOME), then install and log in to every CLI.
+                   --force rewrites an existing REPOS.md
   doctor [cli...]  check each CLI is installed and logged in; exits 1 if any isn't
   install [cli...] install whatever is missing, then log in (all CLIs if none named)
   update [cli...]  update installed CLIs to their latest release (all if none named)
@@ -114,9 +119,85 @@ update() {
 	return $rc
 }
 
+# repos <root> <force>: write REPOS.md, the git repos under <root> that agents read
+# before working in another repo. Skips worktrees, hidden folders (plugins, shell
+# themes, tool caches), orca workspaces and this checkout, and masks credentials in
+# remote URLs. Keeps an existing REPOS.md unless <force> is 1.
+repos() {
+	local root="$1" force="$2" out="$ROOT/REPOS.md" rows
+	if [ -e "$out" ] && [ "$force" -eq 0 ]; then
+		echo "  REPOS.md already exists, so your edits stay. Rerun with --force to rewrite it."
+		return 0
+	fi
+	rows=$(find "$root" \
+		\( -path "$root/.*" -o -path "$root/Library" -o -path "$root/orca" \
+		   -o -name node_modules -o -name .venv -o -name venv -o -name vendor -o -name Pods \
+		   -o -name .build -o -name DerivedData -o -name SourcePackages -o -name Carthage -o -name .claude \) -prune \
+		-o -name .git -type d -print 2>/dev/null |
+	while IFS= read -r g; do
+		r="${g%/.git}"
+		[ "$r" = "$ROOT" ] && continue
+		date=$(git -C "$r" log -1 --format=%cs 2>/dev/null) || date="no commits"
+		printf '%s\t%s\n' "$date" "$r"
+	done | sort -r)
+
+	{
+		echo "# Repos"
+		echo
+		echo "The repos you work in, written by \`hq setup\`. Edit freely: delete repos you don't work in, and add what each one is."
+		echo "Branch from and open PRs against each repo's base branch."
+		printf '%s\n' "$rows" | while IFS=$'\t' read -r date r; do
+			[ -n "$r" ] || continue
+			remote=$(git -C "$r" remote get-url origin 2>/dev/null | sed -E 's#//[^/@]+@#//***@#')
+			base=$(git -C "$r" symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##')
+			if [ -z "$base" ]; then
+				base=$(git -C "$r" symbolic-ref --short HEAD 2>/dev/null)
+				for b in main master; do
+					git -C "$r" show-ref -q --verify "refs/heads/$b" && { base=$b; break; }
+				done
+			fi
+			reads=()
+			for f in AGENTS.md SPEC.md GLOSSARY.md docs/adr; do [ -e "$r/$f" ] && reads+=("$f"); done
+			echo
+			echo "## $(basename "$r")"
+			echo
+			echo "- Path: ${r/#$HOME/~}"
+			echo "- Remote: ${remote:-none (local only, not backed up)}"
+			echo "- Base branch: ${base:-unknown}"
+			echo "- Last commit: $date"
+			[ ${#reads[@]} -gt 0 ] && echo "- Read first: ${reads[*]}"
+		done
+	} > "$out"
+
+	echo "  Wrote REPOS.md with $(grep -c '^## ' "$out") repos. Delete the ones you don't work in, and add a line on what each one is."
+	if grep -q '\*\*\*@' "$out"; then
+		echo "${R}  A remote URL in REPOS.md holds a credential (masked as ***@). Revoke it.$N" >&2
+	fi
+	return 0
+}
+
+# setup [root] [--force]: first-time setup for this checkout.
+setup() {
+	local a root="$HOME" force=0
+	for a in "$@"; do
+		case "$a" in
+			--force) force=1 ;;
+			-*) echo "hq: unknown option '$a'" >&2; usage >&2; exit 2 ;;
+			*) root="$a" ;;
+		esac
+	done
+	[ -d "$root" ] || { echo "hq: '$root' is not a directory" >&2; exit 2; }
+	echo "${B}Repos$N"
+	repos "$root" "$force"
+	echo
+	echo "${B}CLIs$N"
+	install
+}
+
 cmd="${1:-help}"; shift || true
 case "$cmd" in
 	help | -h | --help) usage ;;
+	setup) setup "$@" ;;
 	doctor) check_names "$@"; doctor "$@" ;;
 	install) check_names "$@"; install "$@" ;;
 	update) check_names "$@"; update "$@" ;;
