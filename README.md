@@ -38,6 +38,7 @@ The skills live in `.claude/skills/`.
 | Area | Skills |
 |---|---|
 | Refinement | `refine`: takes one vague Jira ticket to Ready, following the team's Backlog Refinement Playbook. Its templates are in `templates/`. |
+| Specs | `spec`: turns a Jira ticket or idea into an approved technical spec under `work/`, then prints the `npm run sdlc` command to run from kering-technologies-ai. |
 | Code questions | `how`, `why`, `sketch`, `in-your-own-words` |
 | Writing | `unslop`, `technical-writing`, `confluence-page-design` |
 | Review | `security-review` |
